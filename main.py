@@ -63,7 +63,6 @@ def game_loop():
             COUNT = 1
             if al not in aliens:
                 aliens.append(al)
-            print(temp_time)
 
         if temp_time % 10 is 9:
             COUNT = 0
@@ -91,8 +90,12 @@ def game_loop():
                         if alien.life <= 0:
                             aliens.remove(alien)
                         elif alien.life < 10:
-                            alien.sprite = pygame.image.load('./sprites/DamagedAlien.png')
+                            alien.sprite = pygame.image.load('./sprites/Alien.png')
                         mislist.remove(missile)
+
+        for alien in aliens:
+            if temp_time >= alien.spawntime + 10:
+                aliens.remove(alien)
         
         if len(aliens) is 0:
             al = Aliens.alien(temp_time)
