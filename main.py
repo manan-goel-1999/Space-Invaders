@@ -1,30 +1,29 @@
-import SpaceShip
+'''The Actual Code for the Game'''
 import pygame
+import SpaceShip
 import Missiles
-import time
-from colors import *
 
 pygame.init()
 
-GameDisplay = pygame.display.set_mode((800,800))
+DISPLAY = pygame.display.set_mode((800, 800))
 pygame.display.set_caption("Space Invaders")
 
-icon = pygame.image.load("./sprites/spaceship.png")
-background = pygame.image.load("./sprites/Background.jpeg")
+ICON = pygame.image.load("./sprites/spaceship.png")
+BACKGROUND = pygame.image.load("./sprites/Background.jpeg")
 
-ship = SpaceShip.spaceship()
+SHIP = SpaceShip.spaceship()
 
-pygame.display.set_icon(icon)
+pygame.display.set_icon(ICON)
 
-clock = pygame.time.Clock()
+CLOCK = pygame.time.Clock()
 
-def GameLoop():
+def game_loop():
+    '''This Runs The Actual Game'''
     game = True
-    
-    FPS = 40
 
-    mislist_type1 = []
-    mislist_type2 = []
+    frames_second = 40
+
+    mislist = []
 
     x_coord_change = 0
 
@@ -34,49 +33,38 @@ def GameLoop():
             if event.type == pygame.QUIT:
                 game = False
             if event.type == pygame.KEYDOWN:
-                
+
                 if event.key == pygame.K_RIGHT:
-                    if ship.x <= 650:
+                    if SHIP.x_coordinate <= 650:
                         x_coord_change += 100
                 if event.key == pygame.K_LEFT:
-                    if ship.x >= 0:
+                    if SHIP.x_coordinate >= 0:
                         x_coord_change -= 100
                 if event.key == pygame.K_s:
-                    mis = Missiles.missile1(ship.x, ship.y)
-                    mislist_type1.append(mis)
+                    mis = Missiles.missile1(SHIP.x_coordinate, SHIP.y_coordinate)
+                    mislist.append(mis)
                 if event.key == pygame.K_SPACE:
-                    mis = Missiles.missile2(ship.x, ship.y)
-                    mislist_type2.append(mis)
+                    mis = Missiles.missile2(SHIP.x_coordinate, SHIP.y_coordinate)
+                    mislist.append(mis)
 
-        GameDisplay.blit(background,(0,0))
+        DISPLAY.blit(BACKGROUND, (0, 0))
+        for missile in mislist:
+            if missile.__class__ is Missiles.missile1:
+                DISPLAY.blit(missile.missilesprite, (missile.x_coordinate + 40, missile.y_coordinate - 10))
+            if missile.__class__ is Missiles.missile2:
+                DISPLAY.blit(missile.missilesprite, (missile.x_coordinate + 30, missile.y_coordinate - 10))
 
-        for missile in mislist_type1:
-            GameDisplay.blit(missile.missile1sprite, (missile.x + 40, missile.y - 10))
+        for missile in mislist:
+            missile.y_coordinate -= 10
+            if missile.y_coordinate <= 0:
+                mislist.remove(missile)
 
-        for missile in mislist_type2:
-            GameDisplay.blit(missile.missile2sprite, (missile.x + 30, missile.y - 10))
-
-        for missile in mislist_type1:
-            
-            missile.y -= 10
-
-            if missile.y <= 0:
-                mislist_type1.remove(missile)
-
-        for missile in mislist_type2:
-            
-            missile.y -= 10
-
-            if missile.y <= 0:
-                mislist_type2.remove(missile)
-                
-
-        ship.x += x_coord_change
+        SHIP.x_coordinate += x_coord_change
         x_coord_change = 0
-        GameDisplay.blit(ship.shipsprite, (ship.x, ship.y))
+        DISPLAY.blit(SHIP.shipsprite, (SHIP.x_coordinate, SHIP.y_coordinate))
         pygame.display.update()
-        clock.tick(FPS)
-    pygame.QUIT
+
+        CLOCK.tick(frames_second)
     quit()
 
-GameLoop()
+game_loop()
