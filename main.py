@@ -53,6 +53,9 @@ def game_loop():
                 if event.key == pygame.K_SPACE:
                     mis = Missiles.missile2(SHIP.x_coordinate, SHIP.y_coordinate)
                     mislist.append(mis)
+                if event.key == pygame.K_q:
+                    game = False
+                    break
 
         DISPLAY.blit(BACKGROUND, (0, 0))
 
@@ -77,7 +80,11 @@ def game_loop():
                 DISPLAY.blit(missile.missilesprite, (missile.x_coordinate + 30, missile.y_coordinate - 10))
 
         for missile in mislist:
-            missile.y_coordinate -= 10
+            if missile.__class__ is Missiles.missile1:
+                missile.y_coordinate -= 5
+            elif missile.__class__ is Missiles.missile2:
+                missile.y_coordinate -= 10
+            
             if missile.y_coordinate <= 0:
                 mislist.remove(missile)
 
@@ -94,7 +101,9 @@ def game_loop():
                         mislist.remove(missile)
 
         for alien in aliens:
-            if temp_time >= alien.spawntime + 10:
+            if temp_time >= alien.spawntime + 10 and alien.life is 10:
+                aliens.remove(alien)
+            if temp_time >= alien.spawntime + 5 and alien.life < 10:
                 aliens.remove(alien)
         
         if len(aliens) is 0:
