@@ -41,10 +41,10 @@ def game_loop():
                 game = False
             if event.type == pygame.KEYDOWN:
 
-                if event.key == pygame.K_RIGHT:
+                if event.key == pygame.K_d:
                     if SHIP.x_coordinate <= 650:
                         x_coord_change += 100
-                if event.key == pygame.K_LEFT:
+                if event.key == pygame.K_a:
                     if SHIP.x_coordinate >= 0:
                         x_coord_change -= 100
                 if event.key == pygame.K_s:
@@ -101,7 +101,7 @@ def game_loop():
                         mislist.remove(missile)
 
         for alien in aliens:
-            if temp_time >= alien.spawntime + 10 and alien.life is 10:
+            if temp_time >= alien.spawntime + 8 and alien.life is 10:
                 aliens.remove(alien)
             if temp_time >= alien.spawntime + 5 and alien.life < 10:
                 aliens.remove(alien)
