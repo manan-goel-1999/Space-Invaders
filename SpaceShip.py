@@ -1,6 +1,7 @@
 '''Properties of The SpaceShip'''
 import pygame
 
+
 class spaceship:
     '''This Gives Properties to the ship'''
     def __init__(self):
