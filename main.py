@@ -71,7 +71,7 @@ def game_loop():
             if al not in aliens:
                 aliens.append(al)
 
-        if temp_time % 10 is 9:
+        if temp_time % 10 == 9:
             COUNT = 0
 
         for al in aliens:
@@ -110,7 +110,7 @@ def game_loop():
                         mislist.remove(missile)
 
         for alien in aliens:
-            if temp_time >= alien.spawntime + 8 and alien.life is 10:
+            if temp_time >= alien.spawntime + 8 and alien.life == 10:
                 aliens.remove(alien)
             if temp_time >= alien.spawntime + 5 and alien.life < 10:
                 aliens.remove(alien)
