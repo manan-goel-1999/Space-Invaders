@@ -4,10 +4,13 @@ import pygame
 import SpaceShip
 import Missiles
 import Aliens
+from font import *
 
 pygame.init()
 
 DISPLAY = pygame.display.set_mode((800, 800))
+displaywidth = 800
+displayheight = 800
 pygame.display.set_caption("Space Invaders")
 
 ICON = pygame.image.load("./sprites/spaceship.png")
@@ -19,12 +22,36 @@ pygame.display.set_icon(ICON)
 
 CLOCK = pygame.time.Clock()
 
+def intro():
+    '''Introduction Page'''
+    intro = True
+    while intro:
+        DISPLAY.fill(BLACK)
+        message_display("Welcome To The Game", GREEN, -100, "large")
+        message_display("Press P to play and Q to Exit", RED, -50, "medium")
+        message_display("Use A and D to Move The SpaceShip", RED, -25)
+        message_display("Use S and Space Bar to Shoot", WHITE, 0)
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    intro = False
+                    game_loop()
+                if event.key == pygame.K_q:
+                    pygame.quit()
+                    quit()
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
 
 def game_loop():
     '''This Runs The Actual Game'''
     game = True
 
     COUNT = 0
+
+    score = 0
 
     frames_second = 40
 
@@ -103,6 +130,7 @@ def game_loop():
                     if missile.y_coordinate in range(y_c, y_c + 10):
                         alien.life -= missile.damage
                         if alien.life <= 0:
+                            score += 1
                             aliens.remove(alien)
                         elif alien.life < 10:
                             damaged_alien = "./sprites/Alien.png"
@@ -120,10 +148,12 @@ def game_loop():
 
         SHIP.x_coordinate += x_coord_change
         x_coord_change = 0
+        score_font = midfont.render("Score : " + str(score), True, RED)
+        DISPLAY.blit(score_font, (0, 0))
         DISPLAY.blit(SHIP.shipsprite, (SHIP.x_coordinate, SHIP.y_coordinate))
         pygame.display.update()
 
         CLOCK.tick(frames_second)
     quit()
 
-game_loop()
+intro()
